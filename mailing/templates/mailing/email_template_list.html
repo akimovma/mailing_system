@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% bootstrap_css_url %}
+{% block content %}
+  <div class="row mt-3">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h2> Список шаблонов(email) </h2>
+    </div>
+  </div>
+  {% if email_templates %}
+    {% for template in email_templates %}
+      <div class="card mt-3">
+        <div class="card-body">
+          <h4 class="card-title">{{ template.name }}</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Было
+            создано {{ template.created }}</h6>
+          <p class="card-text">{{ template.description }}</p>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'templates_detail' template.id %}" class="card-link">Подробнее</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+     <div class="row mt-3">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <span class="text-secondary">
+        Пока нет ни одного шаблона(email). Всегда можно
+        <a class="text-primary" href="{% url 'templates_create' %}">создать</a> </span>
+    </div>
+  </div>
+  {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% bootstrap_css_url %}
+{% block content %}
+  <div class="row mt-3">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h2> Создать рассылку </h2>
+    </div>
+  </div>
+
+  <form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-secondary float-lg-right">Создать</button>
+    {% endbuttons %}
+  </form>
+
+{% endblock %}

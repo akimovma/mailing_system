@@ -1,0 +1,48 @@
+{% load bootstrap4 %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'index' %}">Emails stuff</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      {% if user.is_authenticated %}
+        <li class="nav-item {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'index' %}">Главная</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+             role="button" data-toggle="dropdown" aria-haspopup="true"
+             aria-expanded="false">
+            Рассылки
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'tasks_list' %}">Список
+              рассылок</a>
+            <a class="dropdown-item" href="{% url 'tasks_create' %}">Создать
+              рассылку</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+             role="button" data-toggle="dropdown" aria-haspopup="true"
+             aria-expanded="false">
+            Шаблоны(email)
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'templates_list' %}">Список
+              шаблонов</a>
+            <a class="dropdown-item" href="#{# {% url 'templates_create' %}#}">Создать
+              шаблон</a>
+          </div>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
