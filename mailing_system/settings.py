@@ -134,7 +134,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
 
-
 CELERY_BEAT_SCHEDULE = {
     'fetch_emails': {
         'task': 'mailing.tasks.fetch_emails',

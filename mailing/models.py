@@ -118,4 +118,4 @@ class EmailTask(TimeStampedModel):
         self.save()
 
     def get_absolute_url(self):
-        return reverse('tasks_detail', args=[str(self.id)])
+        return reverse('task_detail', args=[str(self.id)])

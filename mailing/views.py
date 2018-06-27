@@ -15,6 +15,7 @@ class TaskListView(ListView):
     model = EmailTask
     context_object_name = 'tasks'
     template_name = 'mailing/email_task_list.html'
+    paginate_by = 5
 
 
 class TaskCreateView(CreateView):
@@ -23,7 +24,7 @@ class TaskCreateView(CreateView):
     template_name = 'mailing/email_task_form.html'
 
     def get_success_url(self):
-        return reverse('tasks_list')
+        return reverse('task_list')
 
 
 class TaskDetailView(DetailView):
@@ -34,6 +35,7 @@ class TemplateListView(ListView):
     model = EmailTemplate
     template_name = 'mailing/email_template_list.html'
     context_object_name = 'email_templates'
+    paginate_by = 5
 
 
 class TemplateDetailView(DetailView):
@@ -46,7 +48,7 @@ class TemplateCreateView(CreateView):
     fields = ['name', 'description', 'subject', 'content', 'html_content']
 
     def get_success_url(self):
-        return reverse('templates_list')
+        return reverse('template_list')
 
 
 def change_pause_status(request, task_id):
@@ -56,4 +58,4 @@ def change_pause_status(request, task_id):
     if not task.paused:
         msg = 'Рассылка успешно снята с паузы.'
     messages.success(request, msg)
-    return redirect('tasks_detail', task_id)
+    return redirect('task_list')
