@@ -39,7 +39,9 @@ class TemplateListView(ListView):
 
 
 class TemplateDetailView(DetailView):
-    pass
+    model = EmailTemplate
+    template_name = 'mailing/email_template_detail.html'
+    context_object_name = 'email_template'
 
 
 class TemplateCreateView(CreateView):
@@ -52,6 +54,13 @@ class TemplateCreateView(CreateView):
 
 
 def change_pause_status(request, task_id):
+    """
+    View for change pause status of task
+
+    :raises: Http404 if no such task in DB
+    :param task_id: The task which status would be changed
+    :return: Redirects to list of tasks
+    """
     task = get_object_or_404(EmailTask, id=task_id)
     task.pause()
     msg = 'Рассылка успешно поставлена на паузу.'
