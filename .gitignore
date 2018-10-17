@@ -93,6 +93,7 @@ README2.md
 .idea_modules/
 
 .env/
+.env1/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
