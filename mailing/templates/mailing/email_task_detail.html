@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load bootstrap4 %}
+{% bootstrap_css_url %}
+{% block content %}
+  <div class="card my-3">
+    <div class="card-header">
+      <h2> Рассылка </h2>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Название</h5>
+          <p class="card-text">{{ email_task.name }}</p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Описание</h5>
+          <p class="card-text">{{ email_task.description }}</p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Дата начала</h5>
+          <p class="card-text">{{ email_task.start_date }}</p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Последняя отправка</h5>
+          <p class="card-text">
+            {% if email_task.last_send %}
+              {{ email_task.last_send }}
+            {% else %}
+              -
+            {% endif %}
+          </p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Статус</h5>
+          <p class="card-text">{{ email_task.human_read_status }}</p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Всего отправлено писем</h5>
+          <p class="card-text">{{ email_task.sent }}</p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Периодичность</h5>
+          <p class="card-text">{{ email_task.get_frequency_display }}</p>
+        </li>
+        <li class="list-group-item">
+          <h5 class="card-title text-muted">Шаблон</h5>
+          <div class="card-text">{{ email_task.template.name }}</div>
+        </li>
+      </ul>
+    </div>
+    <div class="card-footer text-muted">
+      Создано - {{ email_task.created_at | naturalday }}
+    </div>
+  </div>
+{% endblock %}

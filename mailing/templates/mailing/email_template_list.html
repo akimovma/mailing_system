@@ -6,6 +6,7 @@
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h2> Список шаблонов(email) </h2>
       <a href="{% url 'template_create' %}"> Создать</a>
+      {% include 'mailing/templates_filter_form.html' %}
     </div>
   </div>
   {% if email_templates %}

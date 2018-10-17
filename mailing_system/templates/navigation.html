@@ -1,6 +1,6 @@
 {% load bootstrap4 %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
   <a class="navbar-brand" href="{% url 'index' %}">Emails stuff</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse"
           data-target="#navbarSupportedContent"
@@ -15,7 +15,7 @@
           <a class="nav-link" href="{% url 'index' %}">Главная</a>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown {% if request.resolver_match.url_name|slice:"0:4" == 'task' %}active{% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
              role="button" data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false">
@@ -29,7 +29,7 @@
           </div>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown {% if request.resolver_match.url_name|slice:"0:8" == 'template' %}active{% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
              role="button" data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false">
@@ -42,7 +42,21 @@
               шаблон</a>
           </div>
         </li>
+      {% else %}
+        <li class="nav-item {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'index' %}">Главная</a>
+        </li>
       {% endif %}
     </ul>
+        <span class="navbar-text">
+        {% if user.is_authenticated %}
+          Hi {{ user.username }}!
+          <span><a href="{% url 'logout' %}">logout</a></span>
+        {% else %}
+          <span>You are not logged in</span>
+          <a href="{% url 'login' %}">login</a> |
+          <a href="{% url 'register' %}">signup</a>
+        {% endif %}
+      </span>
   </div>
 </nav>

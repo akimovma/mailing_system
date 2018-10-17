@@ -15,10 +15,8 @@ def fetch_emails():
     performed.
     """
     logger.info('Try to find emails to send.')
-    email_tasks = EmailTask.objects.all()
+    email_tasks = EmailTask.objects.filter(stopped=False, paused=False).all()
     for email_task in email_tasks:
-        paused = email_task.paused
-        stopped = email_task.stopped
         ready = email_task.ready_for_send
-        if not (paused or stopped) and ready:
+        if ready:
             email_task.perform_task()

@@ -1,16 +1,15 @@
 import calendar
 import datetime
+import logging
 
 from django.db import models
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from post_office import mail
 from post_office.models import EmailTemplate
 
-import logging
-
-from mailing_system.models import TimeStampedModel
+from mailing_system.common.models import TimeStampedModel
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +48,7 @@ class EmailTask(TimeStampedModel):
 
     stopped = models.BooleanField(default=False)
 
-    sent = models.IntegerField(default=0)
+    sent = models.IntegerField(default=0, verbose_name=_("Всего отправлено"))
 
     description = models.TextField(blank=True, verbose_name=_("Описание"))
 
@@ -71,15 +70,14 @@ class EmailTask(TimeStampedModel):
             logger.error(f'There is no template for task - {self.id}')
             return
         # make emails list
-        mails = [r for r in recipients]
+        # mails = [r for r in recipients]
         # send all of them
-        mail.send(mails, self.template)
+        mail.send(recipients, self.template)
         # override the last count of sent emails
-        self.sent = len(mails)
+        self.sent = self.sent + len(recipients)
         self.last_send = datetime.date.today()
         # if this task has frequency ONCE we need to stop that.
-        if self.frequency == self.ONCE:
-            self.stop()
+        self.check_frequency()
         self.save()
 
     def next_month(self, date, months=0):
@@ -117,5 +115,19 @@ class EmailTask(TimeStampedModel):
         self.stopped = True
         self.save()
 
+    @property
+    def human_read_status(self):
+        if not self.stopped:
+            return 'На паузе' if self.paused else 'Активен'
+        return 'Остановлен'
+
     def get_absolute_url(self):
         return reverse('task_detail', args=[str(self.id)])
+
+    def check_frequency(self):
+        if self.frequency == self.ONCE:
+            self.stop()
+
+    @property
+    def active(self):
+        return not self.stopped and not self.paused
