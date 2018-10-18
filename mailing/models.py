@@ -1,15 +1,15 @@
+import logging
 import calendar
 import datetime
-import logging
 
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
-
 from post_office import mail
 from post_office.models import EmailTemplate
 
 from mailing_system.common.models import TimeStampedModel
+
+from django.utils.translation import ugettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
