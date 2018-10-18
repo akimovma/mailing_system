@@ -8,6 +8,8 @@ exclude = '''
   | \.mypy_cache
   | \.tox
   | \.venv
+  | \.env1
+  | \.env
   | _build
   | buck-out
   | build
