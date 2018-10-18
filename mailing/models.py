@@ -15,22 +15,23 @@ logger = logging.getLogger(__name__)
 
 
 class EmailTask(TimeStampedModel):
-    ONCE = 'once'
-    DAILY = 'daily'
-    WEEKLY = 'weekly'
-    MONTHLY = 'monthly'
+    ONCE = "once"
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
 
     FREQUENCY_CHOICES = (
-        (ONCE, _('Один раз')),
-        (DAILY, _('Каждый день')),
-        (WEEKLY, _('Каждую неделю')),
-        (MONTHLY, _('Каждый месяц')),
+        (ONCE, _("Один раз")),
+        (DAILY, _("Каждый день")),
+        (WEEKLY, _("Каждую неделю")),
+        (MONTHLY, _("Каждый месяц")),
     )
 
     name = models.CharField(
-        _('Название рассылки'),
+        _("Название рассылки"),
         max_length=255,
-        help_text=_("пример: Недельная рассылка о главном"))
+        help_text=_("пример: Недельная рассылка о главном"),
+    )
 
     last_send = models.DateField(null=True, blank=True)
 
@@ -40,9 +41,10 @@ class EmailTask(TimeStampedModel):
         null=False,
         blank=False,
         max_length=20,
-        help_text=_('Как часто будет срабатывать рассылка.'))
+        help_text=_("Как часто будет срабатывать рассылка."),
+    )
 
-    start_date = models.DateField(_('Дата начала рассылки'))
+    start_date = models.DateField(_("Дата начала рассылки"))
 
     paused = models.BooleanField(default=False)
 
@@ -52,22 +54,24 @@ class EmailTask(TimeStampedModel):
 
     description = models.TextField(blank=True, verbose_name=_("Описание"))
 
-    template = models.ForeignKey(EmailTemplate,
-                                 on_delete=models.DO_NOTHING,
-                                 related_name='tasks',
-                                 verbose_name=_('Email шаблон'))
+    template = models.ForeignKey(
+        EmailTemplate,
+        on_delete=models.DO_NOTHING,
+        related_name="tasks",
+        verbose_name=_("Email шаблон"),
+    )
 
     def perform_task(self):
-        logger.info(f'Found email task. ID - {self.id}')
+        logger.info(f"Found email task. ID - {self.id}")
         # get recipients for the task
-        recipients = ['temp@temp.ru', 'test@tes.test']
+        recipients = ["temp@temp.ru", "test@tes.test"]
         # just return if we don't have recipients
         if not recipients:
             return
         # we need to check if the template exists, if no just return and
         # log the error
         if not self.template:
-            logger.error(f'There is no template for task - {self.id}')
+            logger.error(f"There is no template for task - {self.id}")
             return
         # make emails list
         # mails = [r for r in recipients]
@@ -96,9 +100,9 @@ class EmailTask(TimeStampedModel):
     @property
     def ready_for_send(self):
         time_factor = {
-            'daily': lambda date: date + datetime.timedelta(days=1),
-            'weekly': lambda date: date + datetime.timedelta(days=7),
-            'monthly': lambda date: self.next_month(date),
+            "daily": lambda date: date + datetime.timedelta(days=1),
+            "weekly": lambda date: date + datetime.timedelta(days=7),
+            "monthly": lambda date: self.next_month(date),
         }
         if not self.last_send:
             return datetime.date.today() == self.start_date
@@ -118,11 +122,11 @@ class EmailTask(TimeStampedModel):
     @property
     def human_read_status(self):
         if not self.stopped:
-            return 'На паузе' if self.paused else 'Активен'
-        return 'Остановлен'
+            return "На паузе" if self.paused else "Активен"
+        return "Остановлен"
 
     def get_absolute_url(self):
-        return reverse('task_detail', args=[str(self.id)])
+        return reverse("task_detail", args=[str(self.id)])
 
     def check_frequency(self):
         if self.frequency == self.ONCE:
