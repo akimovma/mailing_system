@@ -10,7 +10,7 @@ media/
 *.swo
 *.swp
 *.vim
-
+*.sqlite3
 *.db
 *.sublime-project
 *.sublime-workspace
