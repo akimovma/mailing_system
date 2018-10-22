@@ -9,7 +9,7 @@
     </div>
   </div>
   {% if filter.qs %}
-    {% for task in filter.qs %}
+    {% for task in email_tasks %}
       <div class="card mt-3">
         <div class="card-body">
           <h4 class="card-title">{{ task.name }}</h4>

@@ -18,7 +18,7 @@ class IndexView(TemplateView):
 
 class TaskListView(FilteredMixin, common_views.LoginRequiredListView):
     model = EmailTask
-    context_object_name = "tasks"
+    context_object_name = "email_tasks"
     template_name = "mailing/email_task_list.html"
     paginate_by = 5
     filterset_class = EmailTaskFilter
