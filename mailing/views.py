@@ -21,7 +21,7 @@ class TaskListView(FilteredMixin, common_views.LoginRequiredListView):
     context_object_name = "tasks"
     template_name = "mailing/email_task_list.html"
     paginate_by = 5
-    filter_class = EmailTaskFilter
+    filterset_class = EmailTaskFilter
 
 
 class TaskCreateView(common_views.LoginRequiredCreateView):
@@ -45,7 +45,7 @@ class TemplateListView(FilteredMixin, common_views.LoginRequiredListView):
     template_name = "mailing/email_template_list.html"
     context_object_name = "email_templates"
     paginate_by = 5
-    filter_class = EmailTemplateFilter
+    filterset_class = EmailTemplateFilter
 
 
 class TemplateDetailView(common_views.LoginRequiredDetailView):
