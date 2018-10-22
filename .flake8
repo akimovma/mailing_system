@@ -1,5 +1,5 @@
 [flake8]
-exclude = .git,*migrations*,.env,.env1
+exclude = .git,*migrations*,.env,.env1,*local*
 ignore = E203, E266, E501, W503, F403, F401
 max-line-length = 79
 max-complexity = 18
