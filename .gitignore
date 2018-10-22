@@ -10,6 +10,7 @@ media/
 *.swo
 *.swp
 *.vim
+*.sqlite3
 *.db
 *.sublime-project
 *.sublime-workspace
@@ -29,12 +30,10 @@ celerybeat.pid
 logs/
 reports/
 upstream_vendors/
-test_admin/settings/local*.py
-test_admin/settings/*_local*.py
-test_admin/settings/cert.pem
-test_admin/settings/key.pem
-test_admin/static/*
-static/*
+mailing_system/settings/local*.py
+mailing_system/settings/*_local*.py
+mailing_system/settings/cert.pem
+mailing_system/settings/key.pem
 !test_adminl/media/defaults/
 deploy/supervisord.conf
 deploy/nginx.conf
