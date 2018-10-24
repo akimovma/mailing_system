@@ -95,12 +95,6 @@ class EmailTask(TimeStampedModel):
     def ready_for_send(self):
         if not self.active:
             return False
-        if self.frequency == self.ONCE:
-            if not self.last_send:
-                return True
-            else:
-                self.stop()
-                return False
         if not self.last_send:
             return datetime.date.today() == self.start_date
         return self.next_send() <= datetime.date.today()
