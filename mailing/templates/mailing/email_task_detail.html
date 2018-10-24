@@ -32,6 +32,16 @@
           </p>
         </li>
         <li class="list-group-item">
+          <h5 class="card-title text-muted">Следующая отправка</h5>
+          <p class="card-text">
+            {% if email_task.last_send %}
+              {{ email_task.next_send }}
+            {% else %}
+              {{ email_task.start_date }}
+            {% endif %}
+          </p>
+        </li>
+        <li class="list-group-item">
           <h5 class="card-title text-muted">Статус</h5>
           <p class="card-text">{{ email_task.human_read_status }}</p>
         </li>

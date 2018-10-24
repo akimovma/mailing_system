@@ -93,7 +93,7 @@ class EmailTask(TimeStampedModel):
 
     @property
     def ready_for_send(self):
-        if self.paused or self.stopped:
+        if not self.active:
             return False
         if self.frequency == self.ONCE:
             if not self.last_send:
@@ -101,15 +101,9 @@ class EmailTask(TimeStampedModel):
             else:
                 self.stop()
                 return False
-        time_factor = {
-            "daily": lambda date: date + datetime.timedelta(days=1),
-            "weekly": lambda date: date + datetime.timedelta(days=7),
-            "monthly": lambda date: next_month(date),
-        }
         if not self.last_send:
             return datetime.date.today() == self.start_date
-        next_send = time_factor[self.frequency](self.last_send)
-        return next_send <= datetime.date.today()
+        return self.next_send() <= datetime.date.today()
 
     def __str__(self):
         return self.name
@@ -137,3 +131,12 @@ class EmailTask(TimeStampedModel):
     @property
     def active(self):
         return not self.stopped and not self.paused
+
+    @property
+    def next_send(self):
+        time_factor = {
+            "daily": lambda date: date + datetime.timedelta(days=1),
+            "weekly": lambda date: date + datetime.timedelta(days=7),
+            "monthly": lambda date: next_month(date),
+        }
+        return time_factor[self.frequency](self.last_send)
