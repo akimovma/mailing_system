@@ -1,0 +1,28 @@
+{
+  "name": "mailing_system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akimovma/mailing_system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akimovma/mailing_system/issues"
+  },
+  "homepage": "https://github.com/akimovma/mailing_system#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.4.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.10.0",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-cssnano": "^2.1.3"
+  }
+}

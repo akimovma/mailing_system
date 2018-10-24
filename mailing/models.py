@@ -1,5 +1,4 @@
 import logging
-import calendar
 import datetime
 
 from django.db import models
@@ -7,6 +6,7 @@ from django.urls import reverse
 from post_office import mail
 from post_office.models import EmailTemplate
 
+from mailing.utils import next_month
 from mailing_system.common.models import TimeStampedModel
 
 from django.utils.translation import ugettext_lazy as _
@@ -84,12 +84,6 @@ class EmailTask(TimeStampedModel):
         self.check_frequency()
         self.save()
 
-    def next_month(self, date, months=0):
-        month_range = calendar.monthrange(date.year, date.month)[1]
-        month = datetime.timedelta(days=month_range)
-        next_date = date + month
-        return self.next_month(next_date, months - 1) if months else next_date
-
     def pause(self):
         """
         Pause/Resume mailing
@@ -99,10 +93,18 @@ class EmailTask(TimeStampedModel):
 
     @property
     def ready_for_send(self):
+        if self.paused or self.stopped:
+            return False
+        if self.frequency == self.ONCE:
+            if not self.last_send:
+                return True
+            else:
+                self.stop()
+                return False
         time_factor = {
             "daily": lambda date: date + datetime.timedelta(days=1),
             "weekly": lambda date: date + datetime.timedelta(days=7),
-            "monthly": lambda date: self.next_month(date),
+            "monthly": lambda date: next_month(date),
         }
         if not self.last_send:
             return datetime.date.today() == self.start_date
