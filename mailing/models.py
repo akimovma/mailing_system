@@ -7,6 +7,7 @@ from post_office import mail
 from post_office.models import EmailTemplate
 
 from mailing.utils import next_month
+from mailing.managers import TaskManager, ActiveManager
 from mailing_system.common.models import TimeStampedModel
 
 from django.utils.translation import ugettext_lazy as _
@@ -61,6 +62,9 @@ class EmailTask(TimeStampedModel):
         verbose_name=_("Email шаблон"),
     )
 
+    objects = TaskManager()
+    active_objects = ActiveManager()
+
     def perform_task(self):
         logger.info(f"Found email task. ID - {self.id}")
         # get recipients for the task
@@ -81,7 +85,7 @@ class EmailTask(TimeStampedModel):
         self.sent = self.sent + len(recipients)
         self.last_send = datetime.date.today()
         # if this task has frequency ONCE we need to stop that.
-        self.check_frequency()
+        self.check_once_frequency()
         self.save()
 
     def pause(self):
@@ -111,14 +115,14 @@ class EmailTask(TimeStampedModel):
 
     @property
     def human_read_status(self):
-        if not self.stopped:
-            return "На паузе" if self.paused else "Активен"
-        return "Остановлен"
+        if self.stopped:
+            return "Остановлен"
+        return "На паузе" if self.paused else "Активен"
 
     def get_absolute_url(self):
         return reverse("task_detail", args=[str(self.id)])
 
-    def check_frequency(self):
+    def check_once_frequency(self):
         if self.frequency == self.ONCE:
             self.stop()
 
