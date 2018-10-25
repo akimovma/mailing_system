@@ -65,6 +65,12 @@ class EmailTask(TimeStampedModel):
     objects = TaskManager()
     active_objects = ActiveManager()
 
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("task_detail", args=[str(self.id)])
+
     def perform_task(self):
         logger.info(f"Found email task. ID - {self.id}")
         # get recipients for the task
@@ -103,9 +109,6 @@ class EmailTask(TimeStampedModel):
             return datetime.date.today() == self.start_date
         return self.next_send() <= datetime.date.today()
 
-    def __str__(self):
-        return self.name
-
     def stop(self):
         """
         stop the email task
@@ -118,9 +121,6 @@ class EmailTask(TimeStampedModel):
         if self.stopped:
             return "Остановлен"
         return "На паузе" if self.paused else "Активен"
-
-    def get_absolute_url(self):
-        return reverse("task_detail", args=[str(self.id)])
 
     def check_once_frequency(self):
         if self.frequency == self.ONCE:
